@@ -1,45 +1,31 @@
 from rest_framework import serializers
-from .models import Account
+
+from department.serializers import DepartmentSerializer
+from .models import  Doctor
 from django.contrib.auth.hashers import make_password
+from account.serializers import AccountSerializer
 
 
-
-
-
-class AccountSerializer(serializers.ModelSerializer):
+class DoctorSerializer(serializers.ModelSerializer):
+    user = AccountSerializer()
+    department = DepartmentSerializer()
     class Meta:
-        model = Account
-        fields = [
-            "id",
-            "first_name",
-            "last_name",
-            "username",
-            "email",
-            "password",
-        ]
-        extra_kwargs = {"password": {"write_only": True}}
-
-
-
-class SignupSerializer(serializers.ModelSerializer):
-
-    class Meta:
-
-        model= Account
+        model= Doctor
         fields = '__all__'
+        extra_kwargs = {'password':{'write_only':True}}
         # validate_password = make_password
     
         # def create(self, validated_data):
-        #     user = Account.objects.create(
+        #     user = Doctor.objects.create(
         #         username=validated_data["username"],
         #         email=validated_data["email"],
         #         first_name=validated_data["first_name"],
         #         last_name=validated_data["last_name"],
         #         phone_number=validated_data["phone_number"],
-        #         is_patient=validated_data["is_patient"],
-        #         password = make_password(validated_data['password'])
+        #         is_doctor=validated_data["is_doctor"],
+                
         #     )
-            
+        #     user.set_password(validated_data["password"])
         #     user.save()
         #     return user
 
@@ -50,13 +36,13 @@ class SignupSerializer(serializers.ModelSerializer):
         #     phone_number = validated_data.get('phone_number')
             
 
-        #     if Account.objects.filter(username=username).exists():
+        #     if Doctor.objects.filter(username=username).exists():
         #         raise serializers.ValidationError({'username':('username already exists')})
 
-        #     if Account.objects.filter(email=email).exists():
+        #     if Doctor.objects.filter(email=email).exists():
         #         raise serializers.ValidationError({'email':('email already exists')})
 
-        #     if Account.objects.filter(phone_number=phone_number).exists():
+        #     if Doctor.objects.filter(phone_number=phone_number).exists():
         #         raise serializers.ValidationError({'phone_number':('phone number is already exists')})
             
         #     return super().validate(validated_data)
