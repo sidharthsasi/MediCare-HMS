@@ -5,3 +5,7 @@ from department.models import Department
 class Doctor(models.Model):
     user = models.ForeignKey(Account,on_delete=models.CASCADE)  
     department = models.ForeignKey(Department,on_delete=models.CASCADE)
+
+
+    def __str__(self):
+        return self.user.first_name
