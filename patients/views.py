@@ -7,7 +7,27 @@ from rest_framework.response import Response
 from department.models import Department
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.permissions import IsAuthenticated
+from doctor.models import Doctor
 from .serializers import *
+
+
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from rest_framework_simplejwt.views import TokenObtainPairView
+
+class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
+    @classmethod
+    def get_token(cls, user):
+        token = super().get_token(user)
+
+        # Add custom claims
+        token['email'] = user.email
+        token['username'] = user.username
+        # ...
+
+        return token
+
+class MyTokenObtainPairView(TokenObtainPairView):
+    serializer_class = MyTokenObtainPairSerializer
 # Create your views here.
 # class Signup(APIView):
 
@@ -38,16 +58,22 @@ class Patient_Signup(APIView):
         )
         user.is_patient=data["is_patient"]
         print(data["is_patient"])
+        pat=Patient.objects.create(
+            user=user,
+            date_of_birth=data["date_of_birth"],
+            address=data["address"],
+            blood_group=data["blood_group"]
+            )
+        pat.save()
         user.save()
 
-        serializer = AccountSerializer(user)
+        serializer = PatientSerializer(pat)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     
 
 
 
 class LogoutView(APIView):
-    permission_classes = (IsAuthenticated)
 
     def post(self, request):
         try:
@@ -63,12 +89,27 @@ class LogoutView(APIView):
 
 
 class BookAppointment(APIView):
-    serializer_class = AppointmentSerializer
-
+    permission_classes = (IsAuthenticated,)
     def post(self, request):
-        serializer = self.serializer_class(data=request.data)
-        if serializer.is_valid():
-            serializer.save(patient=request.user.patient)
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        else:
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        user=request.user
+        print(user)
+        data=request.data
+        doc_id=data["doc_id"]
+        doctor=Doctor.objects.get(id=doc_id)
+
+
+        apt=Appointment.objects.create(
+
+            
+            user=user,
+            doctor=doctor,
+            age=data["age"],
+            date=data["date"],
+            time=data["time"]
+        )
+
+        apt.save()
+        serializer = AppointmentSerializer(apt)
+        
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+        

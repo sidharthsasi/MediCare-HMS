@@ -12,6 +12,12 @@ class Patient(models.Model):
     user = models.ForeignKey(Account, on_delete=models.CASCADE)
     date_of_birth = models.DateField() 
     address = models.CharField(max_length=255) 
+    blood_group = models.CharField(max_length=20,null=True)
+    
+
+    def __str__(self):
+        return self.user.first_name
+    
     
 
 class Appointment(models.Model):
