@@ -7,5 +7,6 @@ from rest_framework_simplejwt.views import (
 
 urlpatterns = [
     path('adddep', AddDepartment.as_view(),name='addep'),
+    path('alldep', AllDepartment.as_view()),
 
 ]

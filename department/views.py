@@ -4,7 +4,7 @@ from rest_framework.views import APIView
 from .models import Department
 from rest_framework import status
 from rest_framework.response import Response
-
+from rest_framework import generics
 
 # Create your views here.
 
@@ -17,3 +17,9 @@ class AddDepartment(APIView):
             dep.save()
             return Response(dep.data,status = status.HTTP_201_CREATED)
         return Response(status=status.HTTP_400_BAD_REQUEST)
+    
+
+
+class AllDepartment(generics.ListAPIView):
+    queryset=Department.objects.all()
+    serializer_class=DepartmentSerializer

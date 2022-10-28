@@ -49,3 +49,29 @@ class Doctor_Signup(APIView):
 class AllDoc(generics.ListAPIView):
     queryset=Doctor.objects.all()
     serializer_class=DoctorSerializer
+
+
+class UpdateDoctor(APIView):
+  def get_object(self,id):
+    try:
+      return Doctor.objects.get(id=id)
+    except Doctor.DoesNotExist:
+      return Response(status=status.HTTP_400_BAD_REQUEST)
+  
+  def get(self,request,id):
+    patient_obj=self.get_object(id)
+    serializer_obj3=DoctorSerializer(patient_obj)
+    return Response(serializer_obj3.data)
+  
+  def put(self,request,id):
+    patient_obj=self.get_object(id)
+    serializer_obj4=DoctorSerializer(patient_obj,data=request.data)
+    if serializer_obj4.is_valid():
+      serializer_obj4.save()
+      return Response(serializer_obj4.data,status=status.HTTP_200_OK)
+    return Response(serializer_obj4.errors)
+  
+  def delete(self,request,id):
+    patient_obj=self.get_object(id)
+    patient_obj.delete()
+    return Response(status=status.HTTP_204_NO_CONTENT)
