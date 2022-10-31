@@ -127,15 +127,16 @@ class GetPatient(APIView):
     return Response(serializer.data,status=status.HTTP_200_OK)
 
   def post(self,request):
-    serializer_obj2=PatientSerializer(data=request.data)
-    if serializer_obj2.is_valid():
-      serializer_obj2.save()
-      return Response(serializer_obj2.data,status=status.HTTP_201_CREATED)
-    return Response(serializer_obj2.errors,status=status.HTTP_400_BAD_REQUEST)
+    serializer=PatientSerializer(data=request.data)
+    if serializer.is_valid():
+      serializer.save()
+      return Response(serializer.data,status=status.HTTP_201_CREATED)
+    return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
     
 
 
 class UpdateDelPatient(APIView):
+
   def get_object(self,id):
     try:
       return Patient.objects.get(id=id)
@@ -143,19 +144,19 @@ class UpdateDelPatient(APIView):
       return Response(status=status.HTTP_400_BAD_REQUEST)
   
   def get(self,request,id):
-    patient_obj=self.get_object(id)
-    serializer_obj3=PatientSerializer(patient_obj)
-    return Response(serializer_obj3.data)
+    patient_det=self.get_object(id)
+    serializer=PatientSerializer(patient_det)
+    return Response(serializer.data)
   
   def put(self,request,id):
-    patient_obj=self.get_object(id)
-    serializer_obj4=PatientSerializer(patient_obj,data=request.data)
-    if serializer_obj4.is_valid():
-      serializer_obj4.save()
-      return Response(serializer_obj4.data,status=status.HTTP_200_OK)
-    return Response(serializer_obj4.errors)
+    patient_det=self.get_object(id)
+    serializer=PatientSerializer(patient_det,data=request.data)
+    if serializer.is_valid():
+      serializer.save()
+      return Response(serializer.data,status=status.HTTP_200_OK)
+    return Response(serializer.errors)
   
   def delete(self,request,id):
-    patient_obj=self.get_object(id)
-    patient_obj.delete()
+    patient_det=self.get_object(id)
+    patient_det.delete()
     return Response(status=status.HTTP_204_NO_CONTENT)

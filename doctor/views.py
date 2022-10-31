@@ -59,17 +59,17 @@ class UpdateDoctor(APIView):
       return Response(status=status.HTTP_400_BAD_REQUEST)
   
   def get(self,request,id):
-    patient_obj=self.get_object(id)
-    serializer_obj3=DoctorSerializer(patient_obj)
-    return Response(serializer_obj3.data)
+    doctor_det=self.get_object(id)
+    serializer=DoctorSerializer(doctor_det)
+    return Response(serializer.data)
   
   def put(self,request,id):
-    patient_obj=self.get_object(id)
-    serializer_obj4=DoctorSerializer(patient_obj,data=request.data)
-    if serializer_obj4.is_valid():
-      serializer_obj4.save()
-      return Response(serializer_obj4.data,status=status.HTTP_200_OK)
-    return Response(serializer_obj4.errors)
+    doctor_det=self.get_object(id)
+    serializer=DoctorSerializer(doctor_det,data=request.data)
+    if serializer.is_valid():
+      serializer.save()
+      return Response(serializer.data,status=status.HTTP_200_OK)
+    return Response(serializer.errors)
   
   def delete(self,request,id):
     patient_obj=self.get_object(id)
