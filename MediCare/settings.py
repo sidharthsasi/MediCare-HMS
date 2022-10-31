@@ -101,6 +101,21 @@ DATABASES = {
 }
 
 
+DATABASES={
+   'default':{
+      'ENGINE':'django.db.backends.postgresql_psycopg2',
+      'NAME':'MediCare',
+      'USER':'postgres',
+      'PASSWORD':'9889',
+      'HOST':'localhost',
+      'PORT':'5432',
+   }
+}
+
+
+
+
+
 
 
 AUTH_USER_MODEL = "account.Account"
