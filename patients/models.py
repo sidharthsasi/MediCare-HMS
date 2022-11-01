@@ -30,3 +30,23 @@ class Appointment(models.Model):
 
     def __str__(self):
         return self.user.first_name
+
+
+
+# TIMESLOT_LIST = (
+#         ('1', '09:00 – 10:00'),
+#         ('2', '10:00 – 11:00'),
+#         ('3', '11:00 – 12:00'),
+#         ('4', '12:00 – 13:00'),
+#         ('5', '13:00 – 14:00'),
+#     )
+# class Appointment(models.Model):
+#     doctor = models.ForeignKey('Doctor', on_delete=models.CASCADE)
+#     date = models.ForeignKey(Calendar, on_delete=models.CASCADE)
+#     time = models.CharField(max_length=50, choices=TIMESLOT_LIST)
+#     reason_for_visit = models.CharField(max_length=255)
+#     patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
+
+#     def __str__(self):
+#         return self.patient.user.email
+

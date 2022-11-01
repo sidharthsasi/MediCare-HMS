@@ -2,6 +2,7 @@ from django.shortcuts import render
 from rest_framework.views import APIView
 
 from department.serializers import DepartmentSerializer
+from patients.models import Patient
 from .models import Account, Doctor
 from .serializers import DoctorSerializer
 from account.serializers import AccountSerializer
@@ -9,6 +10,7 @@ from rest_framework import status
 from rest_framework.response import Response
 from department.models import Department
 from rest_framework import generics
+from rest_framework.permissions import IsAuthenticated
 
 # Create your views here.
 # class Doctor_Signup(APIView):
@@ -75,3 +77,17 @@ class UpdateDoctor(APIView):
     patient_obj=self.get_object(id)
     patient_obj.delete()
     return Response(status=status.HTTP_204_NO_CONTENT)
+  
+
+
+class Consultation(APIView):
+   permission_classes = (IsAuthenticated,)
+
+   def post(self,request):
+      user=request.user
+      data=request.data 
+      pat_id=data["pat_id"]
+      patient=Patient.objects.get(id=pat_id)
+
+
+      

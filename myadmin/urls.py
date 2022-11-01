@@ -6,9 +6,16 @@ from rest_framework_simplejwt.views import (
 )
 
 urlpatterns = [
-  path('dashboard/', Patient_Signup.as_view(),name='signup'),
-  path('adddep', AddDepartment.as_view(),name='addep'),
+  path('dashboard/', AdminDashboard.as_view()),
   path('alldep', AllDepartment.as_view()),
+  path('alldoc',AllDoc.as_view()),
+  path('allpatient',AllPatient.as_view()),
+  path('adddept',AddDepartment.as_view()),
+  path('adddoctor',AddDoctor.as_view()),
+  path('updatedoctor',UpdateDoctor.as_view()),
+  path('addmedicine',AddMedicine.as_view()),
+
+
 
 ]
 

@@ -160,3 +160,9 @@ class UpdateDelPatient(APIView):
     patient_det=self.get_object(id)
     patient_det.delete()
     return Response(status=status.HTTP_204_NO_CONTENT)
+  
+
+class Approve_Appointment(APIView):
+   def post(self,request,id):
+      apt=Appointment.objects.get(id=id)
+      

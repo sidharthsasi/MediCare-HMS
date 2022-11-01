@@ -1,4 +1,5 @@
 
+from dataclasses import field
 from rest_framework import serializers
 from account.models import Account
 from department.models import Department
@@ -6,7 +7,7 @@ from django.contrib.auth.hashers import make_password
 from department.serializers import DepartmentSerializer
 from doctor.models import Doctor
 from patients.models import Patient
-
+from pharmacy.models import Medicine
 
 
 
@@ -45,3 +46,11 @@ class PatientSerializer(serializers.ModelSerializer):
     class Meta:
         model= Patient
         fields = '__all__'
+
+
+class MedicineSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model=Medicine
+        fields = '__all__'
+
