@@ -1,5 +1,7 @@
 from django.shortcuts import render
 from rest_framework.views import APIView
+
+from patients.models import Appointment
 from .serializers import *
 from rest_framework import generics
 from rest_framework.response import Response
@@ -23,6 +25,12 @@ class AllDepartment(generics.ListAPIView):
 class AllPatient(generics.ListAPIView):
     queryset=Patient.objects.all()
     serializer_class=PatientSerializer
+
+
+class AllAppointment(generics.ListAPIView):
+    queryset=Appointment.objects.all()
+    serializer_class=AppointmentSerializer
+
 
 
 class AddDepartment(APIView):

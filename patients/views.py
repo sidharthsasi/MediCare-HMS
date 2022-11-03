@@ -103,7 +103,8 @@ class BookAppointment(APIView):
             doctor=doctor,
             age=data["age"],
             date=data["date"],
-            time=data["time"]
+            time=data["time"],
+            reason_for_visit=data['reason']
         )
 
         apt.save()

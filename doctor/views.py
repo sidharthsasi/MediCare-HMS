@@ -2,13 +2,15 @@ from django.shortcuts import render
 from rest_framework.views import APIView
 
 from department.serializers import DepartmentSerializer
-from patients.models import Patient
-from .models import Account, Doctor
-from .serializers import DoctorSerializer
+from myadmin.serializers import AppointmentSerializer
+from patients.models import Appointment, Patient
+from .models import Account, Doctor,Consulation
+from .serializers import DoctorSerializer,ConsultSerializer,PatientSerializer
 from account.serializers import AccountSerializer
 from rest_framework import status
 from rest_framework.response import Response
 from department.models import Department
+from pharmacy.models import Medicine
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
 
@@ -80,14 +82,46 @@ class UpdateDoctor(APIView):
   
 
 
-class Consultation(APIView):
+class DoctorConsultation(APIView):
    permission_classes = (IsAuthenticated,)
 
    def post(self,request):
-      user=request.user
+      doctor=request.user
+      print(doctor)
       data=request.data 
       pat_id=data["pat_id"]
-      patient=Patient.objects.get(id=pat_id)
+      patient=Appointment.objects.get(id=pat_id)
+      print(patient)
+      med_id=data["med_id"]
+      medicine=Medicine.objects.get(id=med_id)
+      print(medicine)
+      conslt = Consulation.objects.create(
+       
+        symptoms=data["symptoms"],
+        morning=data["morning"],
+        afternoon=data["afternoon"],
+        night=data["night"],
+        days=data["days"]
 
-
+      )
       
+      conslt.patient=patient.id,
+      conslt.medicine=medicine.id,
+      conslt.save()
+      serializer = ConsultSerializer(conslt)
+
+      return Response(serializer.data,status=status.HTTP_201_CREATED)
+
+
+
+class ListPatients(generics.ListAPIView):
+
+  permission_classes = (IsAuthenticated,)
+  def get(self,request):
+    doctor=request.user.id
+    apt_obj= Appointment.objects.all()
+    serializer= AppointmentSerializer(apt_obj,many=True)
+    return Response(serializer.data,status=status.HTTP_200_OK)
+
+
+    
