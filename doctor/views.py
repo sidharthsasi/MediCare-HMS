@@ -87,16 +87,17 @@ class DoctorConsultation(APIView):
 
    def post(self,request):
       doctor=request.user
-      print(doctor)
       data=request.data 
       pat_id=data["pat_id"]
-      patient=Appointment.objects.get(id=pat_id)
+      patient=Patient.objects.get(id=pat_id)
       print(patient)
-      med_id=data["med_id"]
-      medicine=Medicine.objects.get(id=med_id)
-      print(medicine)
+      doc_id=data["doc_id"]
+      doctor=Doctor.objects.get(id=doc_id)
+      
       conslt = Consulation.objects.create(
-       
+        
+        
+        doctor=doctor,
         symptoms=data["symptoms"],
         morning=data["morning"],
         afternoon=data["afternoon"],
@@ -104,22 +105,22 @@ class DoctorConsultation(APIView):
         days=data["days"]
 
       )
-      
-      conslt.patient=patient.id,
-      conslt.medicine=medicine.id,
+      # conslt.doctor=doctor.id
+      # conslt.patient=patient.id,
+      # conslt.medicine=medicine.id,
       conslt.save()
-      serializer = ConsultSerializer(conslt)
+      serializer = ConsultSerializer(conslt,many=True)
 
       return Response(serializer.data,status=status.HTTP_201_CREATED)
 
 
 
-class ListPatients(generics.ListAPIView):
+class ListPatients(APIView):
 
   permission_classes = (IsAuthenticated,)
   def get(self,request):
     doctor=request.user.id
-    apt_obj= Appointment.objects.all()
+    apt_obj= Appointment.objects.get(doctor=doctor)
     serializer= AppointmentSerializer(apt_obj,many=True)
     return Response(serializer.data,status=status.HTTP_200_OK)
 

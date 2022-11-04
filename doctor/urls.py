@@ -10,7 +10,7 @@ urlpatterns = [
     path('docsignin/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('all-docs', AllDoc.as_view()),
     path('updatedoctor/<int:id>', UpdateDoctor.as_view(), name='updatedoctor') ,
-    path('listpatient',ListPatients.as_view),
+    path('listpatient',ListPatients.as_view()),
     path('consultation',DoctorConsultation.as_view(),name='consultation'),
 
 ]

@@ -17,15 +17,15 @@ class Doctor(models.Model):
 
 class Consulation(models.Model):
     
-    doctor = models.ForeignKey(Doctor,on_delete=models.CASCADE)
-    patient = models.ForeignKey('patients.Patient',on_delete=models.CASCADE)
-    symptoms = models.CharField(max_length=200)
-    medicine = models.ForeignKey(Medicine,on_delete=models.CASCADE),
-    morning=models.IntegerField( validators=[MinValueValidator(0, message='Number of medicines cannot be negative')],null=True)
-    afternoon=models.IntegerField( validators=[MinValueValidator(0, message='Number of medicines cannot be negative')],null=True)
-    night=models.IntegerField( validators=[MinValueValidator(0, message='Number of medicines cannot be negative')],null=True)
-    days=models.IntegerField( validators=[MinValueValidator(0, message='Number of days cannot be negative')],null=True)
+    doctor = models.ForeignKey(Doctor,on_delete=models.CASCADE,null=True)
+    patient = models.ForeignKey('patients.Patient',on_delete=models.CASCADE,null=True)
+    symptoms = models.CharField(max_length=200,null=True)
+    medicine = models.ForeignKey(Medicine,on_delete=models.CASCADE,null=True),
+    morning=models.IntegerField( validators=[MinValueValidator(0)],null=True)
+    afternoon=models.IntegerField( validators=[MinValueValidator(0)],null=True)
+    night=models.IntegerField( validators=[MinValueValidator(0)],null=True)
+    days=models.IntegerField( validators=[MinValueValidator(0)],null=True)
 
 
     def __str__(self):
-        return self.patient.user.first_name
+        return self.user

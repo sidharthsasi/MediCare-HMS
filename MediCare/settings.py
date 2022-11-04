@@ -22,7 +22,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-i1i!(=vkmw+3!%0#1_yv9gkl+sbz_es8t*8ag@#+c)!_q^jv!g'
-
+RAZORPAY_KEY_ID = 'rzp_test_gEuaNaNsxDYHKm'
+RAZORPAY_SECRET_KEY = 'qk7J7bGQjziuTBmm4Tj6tPon'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -41,12 +42,14 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_simplejwt',
     'rest_framework_simplejwt.token_blacklist',
+    'debug_toolbar',
     'account',
     'myadmin',
     'department',
     'doctor',
     'patients',
     'pharmacy',
+    'payment',
     
 ]
 
@@ -58,6 +61,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
+    
 ]
 
 ROOT_URLCONF = 'MediCare.urls'
@@ -196,3 +201,11 @@ SIMPLE_JWT = {
     'SLIDING_TOKEN_LIFETIME': timedelta(minutes=5),
     'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=1),
 }
+
+
+
+INTERNAL_IPS = [
+    
+    "127.0.0.1",
+    
+]
