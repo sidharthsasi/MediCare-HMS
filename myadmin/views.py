@@ -50,7 +50,7 @@ class AddDoctor(APIView):
         data=request.data
         dep_id = data["dep_id"]
         department = Department.objects.get(id=dep_id)
-
+        degree=data["degree"]
 
         user=Account.objects.create_user(
             first_name=data["first_name"],
@@ -61,7 +61,7 @@ class AddDoctor(APIView):
             password=data["password"]
 
         )
-        dep=Doctor.objects.create(department=department, user=user)
+        dep=Doctor.objects.create(department=department, user=user,degree=degree)
         dep.save()
         user.save()
 
