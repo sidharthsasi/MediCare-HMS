@@ -29,6 +29,6 @@ class Consulation(models.Model):
 
 
     def __str__(self):
-        return self.user
+        return self.doctor.user.first_name
         
-        
+

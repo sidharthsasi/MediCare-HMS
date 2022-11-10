@@ -91,13 +91,12 @@ class LogoutView(APIView):
 class BookAppointment(APIView):
     permission_classes = (IsAuthenticated,)
     def post(self, request):
-        user=request.user
+        user= Patient.objects.get(user=request.user)
+       
         print(user)
         data=request.data
         doc_id=data["doc_id"]
         doctor=Doctor.objects.get(id=doc_id)
-
-
         apt=Appointment.objects.create(
             user=user,
             doctor=doctor,

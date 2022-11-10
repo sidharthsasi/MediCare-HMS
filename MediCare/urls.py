@@ -24,6 +24,7 @@ urlpatterns = [
     path('doctor/',include('doctor.urls')),
     path('patients/',include('patients.urls')),
     path('payments/',include('payment.urls')),
+    path('chat/', include('chat.urls')),
     path('__debug__/', include('debug_toolbar.urls')),
 
 ]

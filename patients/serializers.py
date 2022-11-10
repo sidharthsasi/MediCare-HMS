@@ -66,7 +66,7 @@ class SignupSerializer(serializers.ModelSerializer):
 
 
 class AppointmentSerializer(serializers.ModelSerializer):
-    user = AccountSerializer()
+    # user = AccountSerializer()
     class Meta:
         model =Appointment
         fields='__all__'
