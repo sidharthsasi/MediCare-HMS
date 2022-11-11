@@ -166,3 +166,29 @@ class Approve_Appointment(APIView):
    def post(self,request,id):
       apt=Appointment.objects.get(id=id)
       
+
+
+
+
+
+
+class BookLab(APIView):
+    permission_classes = (IsAuthenticated,)
+    def post(self, request):
+        user= Patient.objects.get(user=request.user)
+       
+        print(user)
+        data=request.data
+       
+        lab=Laboratory.objects.create(
+            user=user,
+            age=data["age"],
+            height=data["height"],
+            weight=data["weight"],
+            test_type=data['test_type']
+        )
+
+        lab.save()
+        serializer = LaboratorySerializer(lab)
+        
+        return Response(serializer.data, status=status.HTTP_201_CREATED)

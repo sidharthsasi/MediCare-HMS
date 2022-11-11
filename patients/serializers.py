@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from account.models import Account
 from django.contrib.auth.hashers import make_password
-from.models import Appointment, Patient
+from.models import Appointment, Patient,Laboratory
 from patients.models import Appointment
 from department.serializers import DepartmentSerializer
 
@@ -76,4 +76,11 @@ class PatientSerializer(serializers.ModelSerializer):
     user = AccountSerializer()
     class Meta:
         model= Patient
+        fields = '__all__'
+
+
+class LaboratorySerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model=Laboratory
         fields = '__all__'

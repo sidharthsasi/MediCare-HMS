@@ -2,7 +2,7 @@ import imp
 from django.db import models
 from account.models import Account
 from department.models import Department
-from doctor.models import Doctor
+
 # Create your models here.
 
 
@@ -35,7 +35,7 @@ class Appointment(models.Model):
     age = models.IntegerField(null=True)
     date = models.DateField(null=True)
     time = models.CharField(max_length=50, choices=TIMESLOT_LIST,null=True)
-    doctor=models.ForeignKey(Doctor,on_delete=models.CASCADE,null=True)
+    doctor=models.ForeignKey('doctor.Doctor',on_delete=models.CASCADE,null=True)
     reason_for_visit = models.CharField(max_length=255,null=True)  
 
     def __str__(self):
@@ -43,3 +43,12 @@ class Appointment(models.Model):
 
 
 
+class Laboratory(models.Model):
+    user = models.ForeignKey(Patient,on_delete=models.CASCADE)
+    age = models.IntegerField()
+    weight=models.IntegerField()
+    height=models.IntegerField()
+    test_type=models.CharField(max_length=50)
+
+    def __str__(self):
+        return self.user.user.first_name

@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Message, Channel
+from payment.models import Message, Channel
 from account.models import Account
 from rest_framework.settings import APISettings
 

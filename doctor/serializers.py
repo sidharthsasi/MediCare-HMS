@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
 from department.serializers import DepartmentSerializer
-from .models import  Doctor,Consulation
+from .models import  Doctor,Consulation,Record
 from django.contrib.auth.hashers import make_password
 from account.serializers import AccountSerializer
 from patients.models import Patient
@@ -61,3 +61,11 @@ class PatientSerializer(serializers.ModelSerializer):
     class Meta:
         model= Patient
         fields = '__all__'
+
+class RecordSerializer(serializers.ModelSerializer):
+    file = serializers.FileField(required=False)
+   
+    
+    class Meta:
+        model = Record
+        fields = ("patient", "file")

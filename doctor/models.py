@@ -3,6 +3,9 @@ from account.models import Account
 from department.models import Department
 from pharmacy.models import Medicine
 from django.core.validators import MinValueValidator
+from patients.models import Patient
+def user_directory_path(instance, filename):
+        return 'records/{0}/{1}'.format(instance.patient.user.id, filename)
 
 # Create your models here.
 class Doctor(models.Model):
@@ -32,3 +35,12 @@ class Consulation(models.Model):
         return self.doctor.user.first_name
         
 
+
+class Record(models.Model):
+    patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
+    file = models.FileField(upload_to=user_directory_path)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.patient.user.username
+        

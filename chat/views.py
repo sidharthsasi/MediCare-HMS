@@ -13,7 +13,7 @@ from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.generics import CreateAPIView, ListAPIView
 from rest_framework.response import Response
-from .models import Message, Channel
+from payment.models import Message, Channel
 from account.models import Account
 from rest_framework.response import Response
 from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST
@@ -95,6 +95,3 @@ class MessageListView(APIView):
         return Response(message_list, status=status.HTTP_200_OK)
 
 
-def deleteTheHamza(request):
-    Message.objects.filter(user__username="hamsa").delete()
-    return HttpResponse("LOOOOL")

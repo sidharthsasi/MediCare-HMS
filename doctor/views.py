@@ -5,7 +5,7 @@ from department.serializers import DepartmentSerializer
 from myadmin.serializers import AppointmentSerializer
 from patients.models import Appointment, Patient
 from .models import Account, Doctor,Consulation
-from .serializers import DoctorSerializer,ConsultSerializer,PatientSerializer
+from .serializers import *
 from account.serializers import AccountSerializer
 from rest_framework import status,serializers
 from rest_framework.response import Response
@@ -14,8 +14,9 @@ from pharmacy.models import Medicine
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework.parsers import MultiPartParser, FormParser, FileUploadParser
 from .permissions import *
-
+from django.db.models import Q
 
 # Create your views here.
 # class Doctor_Signup(APIView):
@@ -181,3 +182,69 @@ class ListAppointment(APIView):
     print(apt_obj)
     serializer= AppointmentSerializer(apt_obj,many=True)
     return Response(serializer.data,status=status.HTTP_200_OK)
+
+
+
+
+class PatientRecord(APIView):
+    permission_classes = (IsAuthenticated,)
+    parser_classes = (FormParser, MultiPartParser)
+
+    def post(self, request, format=None):
+        data = request.data
+        print(data)
+        data.update({"patient": self.request.user.id})
+     
+        serializer = RecordSerializer(data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({"detail": "File uploaded successfully"})
+        else:
+            return Response(
+                {"detail": "File upload failed", "errors": serializer.errors}
+            )
+
+
+def has_access(self, request, email):
+    if request.user.email == email:
+        return True
+    elif Appointment.objects.filter(
+        Q(doctor__user__email=request.user.email) & Q(patient__user__email=email) |
+        Q(patient__user__email=request.user.email) & Q(doctor__user__email=email)
+    ).exists():
+        return True
+    else:
+        return False
+
+
+# class ListRecords(APIView):
+#     permission_classes = (IsAuthenticated,)
+
+#     def post(self, request):
+#         email = request.data["email"]
+#         if not has_access(self, request, email):
+#             return Response(
+#                 {"detail": "You do not have access to this patient"}, status=404
+#             )
+#         records = Record.objects.filter(patient__user__email=email)
+#         serializer = RecordSerializer(records, many=True)
+#         return Response(serializer.data)
+
+
+
+# class ListRecords(APIView):
+
+#   permission_classes = (IsAuthenticated,)
+#   def get(self,request):
+#     doctor=request.user.id
+#     apt_obj= Record.objects.filter(doctor=Doctor.objects.get(id=1))
+#     print(apt_obj)
+#     serializer= RecordSerializer(apt_obj,many=True)
+#     return Response(serializer.data,status=status.HTTP_200_OK)
+
+
+
+
+class ListRecords(generics.ListAPIView):
+    queryset=Record.objects.all()
+    serializer_class=RecordSerializer
