@@ -59,8 +59,8 @@ class MessageCreateView(APIView):
     permission_classes = [IsAuthenticated, ]
 
     def post(self, request, channel_id):
-        my_data = request.data
-        serializer = self.serializer_class(data=my_data)
+        data = request.data
+        serializer = self.serializer_class(data=data)
         if serializer.is_valid():
             valid_data = serializer.data
             new_data = {

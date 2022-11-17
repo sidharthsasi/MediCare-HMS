@@ -5,7 +5,7 @@ from .models import  Doctor,Consulation,Record
 from django.contrib.auth.hashers import make_password
 from account.serializers import AccountSerializer
 from patients.models import Patient
-
+from patients.models import Appointment
 class DoctorSerializer(serializers.ModelSerializer):
     user = AccountSerializer()
     department = DepartmentSerializer()
@@ -69,3 +69,12 @@ class RecordSerializer(serializers.ModelSerializer):
     class Meta:
         model = Record
         fields = ("patient", "file")
+
+
+# class AppointmentSerializer(serializers.ModelSerializer):
+#     user = AccountSerializer()
+#     # patient=PatientSerializer()
+#     # doctor = DoctorSerializer()
+#     class Meta:
+#         model = Appointment
+#         fields = '__all__'

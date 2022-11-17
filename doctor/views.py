@@ -119,14 +119,15 @@ class DoctorConsultation(APIView):
       pat_id=data["pat_id"]
       patient=Patient.objects.get(id=pat_id)
       print(patient)
-      # doc_id=data["doc_id"]
-      # doc=Doctor.objects.get(id=doc_id)
+      med_id=data["med_id"]
+      med=Medicine.objects.get(id=med_id)
       # print(doctor)
       conslt = Consulation.objects.create(
         
         
         doctor=doctor,
         patient=patient,
+        medicine=med,
         symptoms=data["symptoms"],
         morning=data["morning"],
         afternoon=data["afternoon"],
@@ -180,7 +181,7 @@ class ListAppointment(APIView):
     doctor=request.user.id
     apt_obj= Appointment.objects.filter(doctor=Doctor.objects.get(id=1))
     print(apt_obj)
-    serializer= AppointmentSerializer(apt_obj,many=True)
+    serializer= AppointmentSerializer(apt_obj)
     return Response(serializer.data,status=status.HTTP_200_OK)
 
 
@@ -205,16 +206,16 @@ class PatientRecord(APIView):
             )
 
 
-def has_access(self, request, email):
-    if request.user.email == email:
-        return True
-    elif Appointment.objects.filter(
-        Q(doctor__user__email=request.user.email) & Q(patient__user__email=email) |
-        Q(patient__user__email=request.user.email) & Q(doctor__user__email=email)
-    ).exists():
-        return True
-    else:
-        return False
+    def has_access(self, request, email):
+        if request.user.email == email:
+            return True
+        elif Appointment.objects.filter(
+            Q(doctor__user__email=request.user.email) & Q(patient__user__email=email) |
+            Q(patient__user__email=request.user.email) & Q(doctor__user__email=email)
+        ).exists():
+            return True
+        else:
+            return False
 
 
 # class ListRecords(APIView):

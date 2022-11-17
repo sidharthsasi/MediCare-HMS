@@ -42,7 +42,7 @@ class DoctorSerializer(serializers.ModelSerializer):
 
 
 class PatientSerializer(serializers.ModelSerializer):
-    user = AccountSerializer()
+    user = AccountSerializer(read_only=True,many=True)
     class Meta:
         model= Patient
         fields = '__all__'
@@ -55,7 +55,7 @@ class MedicineSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class AppointmentSerializer(serializers.ModelSerializer):
-    user = AccountSerializer()
+    user = AccountSerializer(read_only=True,many=True)
     # patient=PatientSerializer()
     # doctor = DoctorSerializer()
     class Meta:
